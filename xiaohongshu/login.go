@@ -63,7 +63,8 @@ func (a *LoginAction) FetchQrcodeImage(ctx context.Context) (string, bool, error
 	pp.MustNavigate("https://www.xiaohongshu.com/explore").MustWaitLoad()
 
 	// 等待一小段时间让页面完全加载
-	time.Sleep(2 * time.Second)
+	// 优化：从2秒减少到1秒，减少总等待时间
+	time.Sleep(1 * time.Second)
 
 	// 检查是否已经登录
 	if exists, _, _ := pp.Has(".main-container .user .link-wrapper .channel"); exists {
