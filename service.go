@@ -554,6 +554,21 @@ func getBrowser() *headless_browser.Browser {
 	return globalBrowser
 }
 
+// cleanupGlobalBrowser 清理全局浏览器实例
+func cleanupGlobalBrowser() {
+	browserMutex.Lock()
+	defer browserMutex.Unlock()
+
+	if globalBrowser != nil {
+		if err := globalBrowser.Close(); err != nil {
+			logrus.Errorf("关闭浏览器失败: %v", err)
+		} else {
+			logrus.Info("全局浏览器实例已关闭")
+		}
+		globalBrowser = nil
+	}
+}
+
 func newBrowser() *headless_browser.Browser {
 	return browser.NewBrowser(configs.IsHeadless(), browser.WithBinPath(configs.GetBinPath()))
 }
